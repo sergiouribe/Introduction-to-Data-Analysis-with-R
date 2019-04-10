@@ -1,0 +1,17 @@
+---
+title: "How to import data"
+output: html_notebook
+---
+
+
+
+```{r install and load the tidyverse package}
+# install.packages("tidyverse") # if isnt installed
+library(tidyverse)
+```
+
+```{r load the dataset}
+caries_12_oecd <- read_csv("http://bit.ly/caries_12_oecd")
+```
+
+
