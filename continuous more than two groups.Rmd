@@ -1,0 +1,81 @@
+---
+title: "ANOVA"
+output: html_notebook
+---
+
+```{r load the tidyverse}
+library(tidyverse)
+```
+
+```{r see the dataset}
+head(ToothGrowth)
+```
+
+
+```{r summary}
+summary(ToothGrowth)
+```
+
+```{r plot by supp}
+ToothGrowth %>% 
+  ggplot(aes(x = supp, y = len, fill = dose )) + 
+  geom_boxplot()
+```
+
+```{r is any difference? t.test by supp}
+t.test(len~supp, data = ToothGrowth)
+```
+
+
+```{r wait! add the dose}
+ToothGrowth %>% 
+  ggplot(aes(x = supp, y = len, fill = dose )) + 
+  geom_boxplot() + 
+  facet_wrap(~dose)
+```
+
+```{r dose seems to be continuous}
+ToothGrowth %>% 
+  ggplot(aes(x = dose, y = len, color = supp)) + 
+  geom_point()
+```
+
+```{r change dose to factor}
+ToothGrowth$dose <- as.factor(ToothGrowth$dose)
+```
+
+```{r}
+ToothGrowth %>% 
+  aov(len ~ dose * supp, data = .) %>% 
+  summary(.)
+```
+```{r plot optional}
+ToothGrowth %>% 
+  ggplot(aes(y = len, x = dose, fill = supp)) + 
+  geom_boxplot() 
+```
+
+
+```{r best plot}
+ToothGrowth %>% 
+  ggplot(aes(y = len, x = dose, color = supp)) + 
+  geom_boxplot() + 
+  facet_wrap(~supp)
+```
+
+
+```{r}
+ToothGrowth %>% 
+  group_by(supp, dose) %>% 
+  summarise(mean = mean(len)) %>% 
+  ggplot(aes(x = dose, y = mean, group = supp)) + 
+  geom_line()
+```
+
+```{r}
+ToothGrowth %>% 
+  aov(len ~ dose * supp, data = .) %>% 
+  TukeyHSD(.) 
+```
+
+

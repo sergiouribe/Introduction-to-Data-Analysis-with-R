@@ -1,0 +1,121 @@
+---
+title: "Effectiveness of School lectures to decrease snack consumption"
+output: html_notebook
+---
+
+
+```{r}
+# install.packages("tidyverse")
+library(tidyverse)
+```
+
+```{r}
+school_lectures <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vStv7Pr69DtRKv6Nw6gVBep8hbT3pEeO6B1vNwxK_1DUHgpoTgbuRpZ4SvgtHFQnBZJVGeeQVyRuXZl/pub?gid=1434210139&single=true&output=csv")
+```
+
+# Caries
+
+## Import the dataset
+
+```{r}
+caries <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vStv7Pr69DtRKv6Nw6gVBep8hbT3pEeO6B1vNwxK_1DUHgpoTgbuRpZ4SvgtHFQnBZJVGeeQVyRuXZl/pub?gid=915968992&single=true&output=csv")
+```
+
+## Exploratory data analysis
+```{r}
+head(caries)
+```
+```{r}
+dim(caries)
+```
+```{r}
+names(caries)
+```
+
+```{r}
+summary(caries)
+```
+```{r}
+class(caries$school)
+```
+```{r}
+caries$school <- as.factor(caries$school)
+```
+
+```{r}
+caries %>% 
+  ggplot(aes(x = age)) +
+  geom_histogram(bins = 10)
+```
+
+```{r}
+table(caries$sex)
+```
+
+```{r}
+caries$sex <- recode(caries$sex, "mle" = "male")
+```
+
+```{r}
+which(caries$sex == "mle")
+```
+
+# Make summaries
+
+```{r}
+caries %>% 
+  group_by(sex) %>% 
+  summarise(n = n(), "Age mean" = mean(age), "Age SD" = sd(age), min = min(age), max = max(age))
+```
+
+```{r}
+summary(caries$age)
+```
+
+```{r}
+caries_complete <-  na.omit(caries)
+```
+
+```{r}
+summary(caries_complete)
+```
+
+```{r}
+caries_complete %>% 
+  group_by(sex) %>% 
+  summarise(n = n(), "Age mean" = mean(age), "Age SD" = sd(age), min = min(age), max = max(age))
+
+```
+
+```{r}
+head(school_lectures)
+```
+```{r}
+school_lectures %>% 
+  ggplot(aes(x = `Sweet snacks`)) +
+  geom_histogram(bins = 8)
+```
+
+```{r}
+school_lectures %>% 
+  ggplot(aes(x = `Sweet snacks`)) +
+  geom_histogram(bins = 8) +
+  facet_wrap(~Group)
+```
+
+```{r}
+school_lectures %>% 
+  ggplot(aes(x = Group, y = `Sweet snacks`)) +
+  geom_boxplot() +
+  geom_jitter()
+```
+```{r}
+school_lectures %>% 
+  group_by(Group) %>% 
+  summarise(snacks_mean = mean(`Sweet snacks`), sd = sd(`Sweet snacks`))
+```
+
+```{r}
+t.test(`Sweet snacks` ~ Group, data = school_lectures)
+```
+

@@ -1,0 +1,188 @@
+---
+title: "EDA"
+output: html_notebook
+---
+
+
+
+```{r install and load the tidyverse package}
+# install.packages("tidyverse") # if isnt installed
+library(tidyverse)
+```
+
+```{r load the dataset}
+caries <- read_csv("http://bit.ly/caries_visualization")
+```
+```{r see the head}
+head(caries)
+```
+```{r summary}
+summary(caries)
+```
+
+```{r}
+dim(caries)
+```
+
+Types of variables
+```{r}
+class(caries$school)
+```
+
+Essentially are three 
+
+ 1. num/int
+ 1. chr/factor
+ 1. logical
+ 
+ Change class
+```{r}
+caries$school <- as.factor(caries$school)
+```
+
+```{r}
+summary(caries)
+```
+
+# Missing and wrong data 
+```{r}
+mean(caries$age)
+```
+
+```{r}
+caries %>% 
+  # na.omit() %>% 
+  group_by(sex) %>% 
+  summarise("Age mean" = mean(age), "Age SD" = sd(age))
+```
+
+## Fixing NA
+
+Leave only completed cases
+```{r}
+caries_complete <- na.omit(caries)
+```
+
+```{r}
+caries_complete %>% 
+  # na.omit() %>% 
+  group_by(sex) %>% 
+  summarise("Age mean" = mean(age), "Age SD" = sd(age))
+
+```
+
+## Locate strange data
+```{r}
+which(caries_complete$sex == "mle")
+```
+
+index vs cartesian data
+
+```{r change one value}
+caries_complete[16, "sex"] <- "male"
+```
+
+```{r check the change}
+caries_complete %>% 
+  # na.omit() %>% 
+  group_by(sex) %>% 
+  summarise("Age mean" = mean(age), "Age SD" = sd(age))
+
+```
+# Filter
+
+
+# Summarise
+
+
+# Create a new var
+DMF
+```{r create a new var}
+caries_complete %>% 
+  mutate(DMF = D + M + F)
+```
+
+Save
+```{r save the new var}
+caries_complete <- caries_complete %>% 
+  mutate(DMF = D + M + F)
+
+```
+
+Create a var caries yes/no
+
+```{r create a new var 2}
+caries_complete %>% 
+  mutate(caries_history = case_when(
+    DMF == 0 ~ "no", 
+    TRUE ~ "yes"
+  ))
+```
+```{r save the new var 2}
+caries_complete <- caries_complete %>% 
+  mutate(caries_history = case_when(
+    DMF == 0 ~ "no", 
+    TRUE ~ "yes"
+  ))
+
+```
+
+
+# Tables
+
+
+```{r one var table}
+table(caries_complete$sex)
+```
+
+```{r cross tables}
+table(caries_complete$sex, caries_complete$caries_history)
+```
+
+```{r mosaic plot}
+mosaicplot(table(caries_complete$sex, caries_complete$caries_history))
+```
+```{r mosaic with shade}
+mosaicplot(table(caries_complete$sex, caries_complete$caries_history), 
+           shade = T)
+
+```
+Check
+```{r check with x2}
+chisq.test(table(caries_complete$sex, caries_complete$caries_history))
+```
+
+```{r equivalent in ggplot}
+caries_complete %>% 
+  ggplot(aes(x = sex, fill = caries_history)) +
+  geom_bar()
+  
+```
+
+TASK: table by school
+
+```{r}
+caries_complete %>% 
+  ggplot(aes(x = age, y = DMF)) + 
+  geom_point()
+```
+
+```{r}
+caries_complete %>% 
+  ggplot(aes(x = age, y = DMF)) + 
+  geom_point() + 
+  geom_smooth()
+```
+```{r}
+caries_complete %>% 
+  ggplot(aes(x = age, y = DMF, color = sex)) + 
+  geom_point() +
+  geom_smooth()
+```
+```{r}
+caries_complete %>% 
+  ggplot(aes(x = age, y = DMF)) + 
+  geom_point() + 
+  facet_wrap(~sex)
+```
+

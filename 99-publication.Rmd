@@ -1,0 +1,58 @@
+---
+title: "My first paper"
+author: "Sergio Uribe"
+date: "April 13, 2019"
+output: html_document
+---
+
+
+```{r, include=FALSE}
+library(tidyverse)
+```
+
+# Introduction
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque imperdiet magna et imperdiet malesuada. Nulla iaculis pretium condimentum. Sed rutrum sapien ut facilisis imperdiet. Fusce egestas eu lectus in sodales. Integer vehicula leo in urna pellentesque aliquet sed eu sapien. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget porttitor felis. Proin lobortis nulla ex, eget pulvinar nibh imperdiet at. Aenean fermentum accumsan rhoncus.
+
+Phasellus auctor neque non mattis blandit. Nulla eros tortor, dictum at mattis sed, imperdiet eu massa. Cras a nisi ac sem tristique hendrerit ac non elit. Vestibulum eget porta lectus. Quisque viverra lorem euismod, convallis tortor id, pulvinar neque. Nunc maximus nisl sit amet augue viverra porta et at turpis. Quisque vitae magna vitae eros luctus dapibus vel at felis. Fusce et massa feugiat, molestie nulla eget, commodo lacus. Ut ac facilisis massa. Vivamus vitae risus quam. Duis suscipit libero ligula. Pellentesque erat purus, consectetur et volutpat sed, hendrerit non lorem. Integer a metus et tortor consequat accumsan sit amet a magna. Maecenas viverra mauris eget est tristique egestas. Etiam suscipit finibus aliquam. Vestibulum sed arcu nec felis euismod suscipit sed et justo.
+
+# Methods
+
+Phasellus auctor neque non mattis blandit. Nulla eros tortor, dictum at mattis sed, imperdiet eu massa. Cras a nisi ac sem tristique hendrerit ac non elit. Vestibulum eget porta lectus. Quisque viverra lorem euismod, convallis tortor id, pulvinar neque. 
+
+## Sample
+Nunc maximus nisl sit amet augue viverra porta et at turpis. Quisque vitae magna vitae eros luctus dapibus vel at felis. Fusce et massa feugiat, molestie nulla eget, commodo lacus. Ut ac facilisis massa. Vivamus vitae risus quam. Duis suscipit libero ligula. Pellentesque erat purus, consectetur et volutpat sed, hendrerit non lorem. Integer a metus et tortor consequat accumsan sit amet a magna. Maecenas viverra mauris eget est tristique egestas. Etiam suscipit finibus aliquam. Vestibulum sed arcu nec felis euismod suscipit sed et justo.
+
+
+![Example image](https://www.perio.org/sites/default/files/files/AAP-CDC_Infographic_11x9_FINAL_large.jpg)
+
+# Results
+## Figures
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque imperdiet magna et imperdiet malesuada. Nulla iaculis pretium condimentum. Sed rutrum sapien ut facilisis imperdiet. Fusce egestas eu lectus in sodales. Integer vehicula leo in urna pellentesque aliquet sed eu sapien. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget porttitor felis. Proin lobortis nulla ex, eget pulvinar nibh imperdiet at. Aenean fermentum accumsan rhoncus.
+```{r plot, echo=FALSE}
+qplot(hp, mpg, col = factor(cyl), data = mtcars)
+```
+## Tables
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque imperdiet magna et imperdiet malesuada. Nulla iaculis pretium condimentum. Sed rutrum sapien ut facilisis imperdiet. Fusce egestas eu lectus in sodales. Integer vehicula leo in urna pellentesque aliquet sed eu sapien. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget porttitor felis. Proin lobortis nulla ex, eget pulvinar nibh imperdiet at. Aenean fermentum accumsan rhoncus.
+
+
+```{r, echo=FALSE}
+knitr::kable(head(mtcars), digits = 1)
+```
+
+Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin eget porttitor felis. Proin lobortis nulla ex, eget pulvinar nibh imperdiet at. Aenean fermentum accumsan rhoncus.
+
+
+
+```{r, echo=FALSE}
+mod <- lm(mpg ~ hp + cyl, data = mtcars)
+knitr::kable(broom::tidy(mod), digits = 3)
+```
+And the report should be something like: 
+```{r, echo=FALSE}
+ts <- with(mtcars,t.test(hp[cyl==4], hp[cyl==6]))
+```
+There’s a statistically-significant difference in horsepower for 4- and 6-cylinder cars `r round(ts$parameter, 2)`.
+
+
+# Discussion
+The result if 

@@ -1,0 +1,56 @@
+---
+title: "Independent T test"
+output: html_notebook
+---
+Results of a hypothetical experiment to see the effect of giving a talk about the risks of sugar. There are two groups, the control that does not receive any instruction and the test that receives a 15-minute talk. The children are then observed to see how many sweets they eat during the day.
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r load the data}
+df <- readr::read_csv("http://bit.ly/stats-t-test")
+```
+```{r check the data}
+dplyr::glimpse(df)
+```
+
+# First graph
+```{r column plot}
+df %>% 
+  ggplot(aes(x = Group, y = `Sweet snacks`)) + 
+  geom_col()
+  
+```
+```{r boxplot}
+df %>% 
+  ggplot(aes(x =Group, y = `Sweet snacks`)) + 
+  geom_boxplot() + 
+  geom_jitter()
+           
+```
+```{r histogram}
+df %>% 
+  ggplot(aes(x = `Sweet snacks`)) + 
+  geom_histogram(bins = 9)
+```
+
+```{r facetting}
+df %>% 
+  ggplot(aes(x = `Sweet snacks`)) + 
+  geom_histogram(bins = 8) + 
+  facet_wrap(~Group)
+
+```
+
+# Inferential test
+```{r t-test}
+t.test(df$`Sweet snacks` ~ df$Group)
+```
+
+```{r t test inside a pipe}
+df %>% 
+  t.test(`Sweet snacks`~Group, data = .)
+```
+
